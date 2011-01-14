@@ -49,13 +49,15 @@ module Sinatra
       end
 
       def stylesheet_tag(source, options = {})
+        source = "/stylesheets/#{source}" unless source =~ /\//
         source = "#{source}.css" unless source =~ /\.css$/
         tag("link", { :type => "text/css",
             :charset => "utf-8", :media => "screen", :rel => "stylesheet",
-            :href => "/stylesheets/#{source}" }.merge(options))
+            :href => source }.merge(options))
       end
 
       def javascript_tag(source, options = {})
+        source = "/javascripts/#{source}" unless source =~ /\//
         source = "#{source}.js" unless source =~ /\.js$/
         tag("script", { :type => "text/javascript", :charset => "utf-8",
             :src => "/javascripts/#{source}" }.merge(options)) do
