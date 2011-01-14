@@ -1,5 +1,3 @@
-require 'sinatra/base'
-
 class Array
   def extract_options!
     last.is_a?(::Hash) ? pop : {}
@@ -10,7 +8,7 @@ module Sinatra
   module StaticAssets
     module Helpers
       def image_tag(source, options = {})
-        options[:src] = "images/#{source}"
+        options[:src] = "/images/#{source}"
         tag("img", options)
       end
 
@@ -54,13 +52,13 @@ module Sinatra
         source = "#{source}.css" unless source =~ /\.css$/
         tag("link", { :type => "text/css",
             :charset => "utf-8", :media => "screen", :rel => "stylesheet",
-            :href => "stylesheets/#{source}" }.merge(options))
+            :href => "/stylesheets/#{source}" }.merge(options))
       end
 
       def javascript_tag(source, options = {})
         source = "#{source}.js" unless source =~ /\.js$/
         tag("script", { :type => "text/javascript", :charset => "utf-8",
-            :src => "javascripts/#{source}" }.merge(options)) do
+            :src => "/javascripts/#{source}" }.merge(options)) do
             end
       end
 
