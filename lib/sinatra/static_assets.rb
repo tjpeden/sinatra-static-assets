@@ -60,7 +60,7 @@ module Sinatra
         source = "/javascripts/#{source}" unless source =~ /\//
         source = "#{source}.js" unless source =~ /\.js$/
         tag("script", { :type => "text/javascript", :charset => "utf-8",
-            :src => source} }.merge(options)) {  }
+          :src => source} }.merge(options)) do; end
       end
 
       def extract_options!(a)
