@@ -17,7 +17,7 @@ module Sinatra
         sources.collect { |source| stylesheet_tag(source, options) }.join("\n")
       end
 
-      def javascript_script_tag(*sources)
+      def javascript_include_tag(*sources)
         options = sources.extract_options!
         sources.collect { |source| javascript_tag(source, options) }.join("\n")
       end
