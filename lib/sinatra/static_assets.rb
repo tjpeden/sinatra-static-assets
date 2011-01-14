@@ -1,35 +1,31 @@
 require 'sinatra/base'
-require 'sinatra/url_for'
+
+class Array
+  def extract_options!
+    last.is_a?(::Hash) ? pop : {}
+  end
+end
 
 module Sinatra
   module StaticAssets
     module Helpers
-      # In HTML <link> and <img> tags have no end tag.
-      # In XHTML, on the contrary, these tags must be properly closed.
-      #
-      # We can choose the appropriate behaviour with +closed+ option:
-      #
-      #   image_tag "/images/foo.png", :alt => "Foo itself", :closed => true
-      #
-      # The default value of +closed+ option is +false+.
-      #
       def image_tag(source, options = {})
-        options[:src] = url_for(source)
+        options[:src] = "images/#{source}"
         tag("img", options)
       end
 
       def stylesheet_link_tag(*sources)
-        list, options = extract_options(sources)
-        list.collect { |source| stylesheet_tag(source, options) }.join("\n")
+        options = sources.extract_options!
+        sources.collect { |source| stylesheet_tag(source, options) }.join("\n")
       end
 
       def javascript_script_tag(*sources)
-        list, options = extract_options(sources)
-        list.collect { |source| javascript_tag(source, options) }.join("\n")
+        options = sources.extract_options!
+        sources.collect { |source| javascript_tag(source, options) }.join("\n")
       end
 
       def link_to(desc, url, options = {})
-        tag("a", options.merge(:href => url_for(url))) do
+        tag( "a", options.merge(:href => url) ) do
           desc
         end
       end
@@ -42,7 +38,7 @@ module Sinatra
           content = yield
           "#{start_tag}>#{content}</#{name}>"
         else
-          "#{start_tag}#{"/" if options.xhtml}>"
+          "#{start_tag}/>"
         end
       end
 
@@ -55,20 +51,21 @@ module Sinatra
       end
 
       def stylesheet_tag(source, options = {})
+        source = "#{source}.css" unless source =~ /\.css$/
         tag("link", { :type => "text/css",
             :charset => "utf-8", :media => "screen", :rel => "stylesheet",
-            :href => url_for(source) }.merge(options))
+            :href => "stylesheets/#{source}" }.merge(options))
       end
 
       def javascript_tag(source, options = {})
+        source = "#{source}.js" unless source =~ /\.js$/
         tag("script", { :type => "text/javascript", :charset => "utf-8",
-            :src => url_for(source) }.merge(options)) do
+            :src => "javascripts/#{source}" }.merge(options)) do
             end
       end
 
-      def extract_options(a)
-        opts = a.last.is_a?(::Hash) ? a.pop : {}
-        [a, opts]  
+      def extract_options!(a)
+        a.last.is_a?(::Hash) ? a.pop : {}
       end
 
     end
