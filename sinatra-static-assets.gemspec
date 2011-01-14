@@ -90,7 +90,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rack>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0.9.1"])
-      s.add_runtime_dependency(%q<sinatra-url-for>, [">= 0.2.1"])
       s.add_development_dependency(%q<rack-test>, [">= 0.3.0"])
     else
       s.add_dependency(%q<rack>, [">= 1.0.0"])
